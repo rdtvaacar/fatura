@@ -1,12 +1,12 @@
 <?php
 
-namespace Acr\Des\Model;
+namespace Acr\Fat\Model;
 
 use Illuminate\Database\Eloquent\Model;
 use App\User;
 use Auth;
 
-class Destek_dosya_model extends Model
+class Fatura_dosya_model extends Model
 
 {
     /**
@@ -14,6 +14,6 @@ class Destek_dosya_model extends Model
      *
      * @var string
      */
-    protected $table = 'destek_dosya';
+    protected $table = 'fatura_dosya';
 
 }

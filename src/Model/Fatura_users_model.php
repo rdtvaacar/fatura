@@ -1,11 +1,11 @@
 <?php
 
-namespace Acr\Des\Model;
+namespace Acr\Fat\Model;
 
 use Illuminate\Database\Eloquent\Model;
 use Auth;
 
-class Destek_users_model extends Model
+class Fatura_users_model extends Model
 
 {
     /**
@@ -13,5 +13,5 @@ class Destek_users_model extends Model
      *
      * @var string
      */
-    protected $table = 'destek_users';
+    protected $table = 'fatura_users';
 }

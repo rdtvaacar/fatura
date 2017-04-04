@@ -1,9 +1,9 @@
-@extends('acr_destek.index')
-@section('acr_destek')
+@extends('acr_fatura.index')
+@section('acr_fatura')
     <section class="content">
         <div class="row">
-        <?php echo $destek->menu($tab);
-        $mesaj = $destek_model->mesaj_oku($mesaj_id);
+        <?php echo $fatura->menu($tab);
+        $mesaj = $fatura_model->mesaj_oku($mesaj_id);
 
         ?>
         <!-- /.col -->
@@ -26,10 +26,10 @@
                         <!-- /.mailbox-read-info -->
                         <div class="mailbox-controls with-border text-center">
                             <div class="btn-group">
-                                <a href="/acr/des/sil_link?destek_id=<?php echo $mesaj_id ?>&tab=<?php echo $tab ?>" type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-container="body"
+                                <a href="/acr/fat/sil_link?fatura_id=<?php echo $mesaj_id ?>&tab=<?php echo $tab ?>" type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-container="body"
                                    title="Delete">
                                     <i class="fa fa-trash-o"></i></a>
-                                <a href="/acr/des/yeni_mesaj?mesaj_id=<?php echo $mesaj_id ?>" class="btn btn-default btn-sm" data-toggle="tooltip" data-container="body" title="Cevapla">
+                                <a href="/acr/fat/yeni_mesaj?mesaj_id=<?php echo $mesaj_id ?>" class="btn btn-default btn-sm" data-toggle="tooltip" data-container="body" title="Cevapla">
                                     <i class="fa fa-reply"></i></a>
 
                             </div>
@@ -49,10 +49,10 @@
                         <ul class="mailbox-attachments clearfix">
                             <li>
                                 <div class="mailbox-attachment-info">
-                                    <a href="/acr/des/dosya_indir?dosya_id=<?php echo $mesaj->destek_dosya_id ?>" class="mailbox-attachment-name"><i class="fa fa-paperclip"></i> <?php echo $mesaj->dosya_org_isim ?></a>
+                                    <a href="/acr/fat/dosya_indir?dosya_id=<?php echo $mesaj->fatura_dosya_id ?>" class="mailbox-attachment-name"><i class="fa fa-paperclip"></i> <?php echo $mesaj->dosya_org_isim ?></a>
                                     <span class="mailbox-attachment-size">
                                     <?php echo $mesaj->size ?> MB
-                          <a href="/acr/des/dosya_indir?dosya_id=<?php echo $mesaj->destek_dosya_id ?>" class="btn btn-default btn-xs pull-right"><i
+                          <a href="/acr/fat/dosya_indir?dosya_id=<?php echo $mesaj->fatura_dosya_id ?>" class="btn btn-default btn-xs pull-right"><i
                                       class="fa fa-cloud-download"></i></a>
                         </span>
                                 </div>
@@ -64,9 +64,9 @@
                 <!-- /.box-footer -->
                     <div class="box-footer">
                         <div class="pull-right">
-                            <a href="/acr/des/yeni_mesaj?mesaj_id=<?php echo $mesaj_id ?>" class="btn btn-default"><i class="fa fa-reply"></i> Cevapla</a>
+                            <a href="/acr/fat/yeni_mesaj?mesaj_id=<?php echo $mesaj_id ?>" class="btn btn-default"><i class="fa fa-reply"></i> Cevapla</a>
                         </div>
-                        <a href="/acr/des/destek_sil?destek_id=<?php echo $mesaj_id ?>&tab=<?php echo $tab ?>" class="btn btn-default"><i class="fa fa-trash-o"></i> Sil</a>
+                        <a href="/acr/fat/fatura_sil?fatura_id=<?php echo $mesaj_id ?>&tab=<?php echo $tab ?>" class="btn btn-default"><i class="fa fa-trash-o"></i> Sil</a>
                     </div>
                     <!-- /.box-footer -->
                 </div>

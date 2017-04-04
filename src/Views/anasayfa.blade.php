@@ -1,10 +1,10 @@
-@extends('acr_destek.index')
-@section('acr_destek')
+@extends('acr_fatura.index')
+@section('acr_fatura')
     <!-- Main content -->
     <section class="content">
         <div class="row">
-        <?php echo $destek->menu($tab);
-        $mesajlar = $destek_model->mesajlar($tab, 0);
+        <?php echo $fatura->menu($tab);
+        $mesajlar = $fatura_model->mesajlar($tab, 0);
         ?>
 
         <!-- /.col -->
@@ -44,7 +44,7 @@
                                     <?php
 
                                     foreach ($mesajlar as $item) {
-                                        echo $destek->destek_satir($item, $tab);
+                                        echo $fatura->fatura_satir($item, $tab);
                                     }
                                     ?>
                                     </tbody>
@@ -86,11 +86,11 @@
             if (confirm('Seçilen öğeleri silmek istediğinizden emin misiniz?') == true) {
                 $.ajax({
                     type   : 'post',
-                    url    : '/acr/des/destek_sec_sil',
+                    url    : '/acr/fat/fatura_sec_sil',
                     data   : $(".kutu_form").serialize(),
                     success: function (veri) {
                         $.each(veri, function (key, val) {
-                            $('#destek_satir_' + val).hide();
+                            $('#fatura_satir_' + val).hide();
                         })
 
                     }

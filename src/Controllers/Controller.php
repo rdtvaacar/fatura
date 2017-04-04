@@ -1,6 +1,6 @@
 <?php
 
-namespace Acr\Des\Controllers;
+namespace Acr\Fat\Controllers;
 
 use Illuminate\Routing\Controller as BaseController;
 use Auth;

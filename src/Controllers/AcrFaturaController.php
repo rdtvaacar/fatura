@@ -1,15 +1,15 @@
 <?php
 
-namespace Acr\Des\Controllers;
+namespace Acr\Fat\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Acr\Des\Model\Destek_model;
-use Acr\Des\Model\Destek_dosya_model;
+use Acr\Fat\Model\Fatura_model;
+use Acr\Fat\Model\Fatura_dosya_model;
 use Auth;
-use Acr\Des\Controllers\MailController;
+use Acr\Fat\Controllers\MailController;
 
-class AcrDesController extends Controller
+class AcrFatController extends Controller
 {
     protected $basarili           = '<div class="alert alert-success">Başarıyla Eklendi</div>';
     protected $silindi            = '<div class="alert alert-warning">Başarıyla Silindi</div>';
@@ -19,10 +19,10 @@ class AcrDesController extends Controller
 
     function login(Request $request)
     {
-        $destek_model = new Destek_model();
-        if ($request->server('SERVER_NAME') == 'destek2') {
+        $fatura_model = new Fatura_model();
+        if ($request->server('SERVER_NAME') == 'fatura2') {
             Auth::loginUsingId(1, true);
-            echo $destek_model->uye_id();
+            echo $fatura_model->uye_id();
         }
     }
 
@@ -45,22 +45,22 @@ class AcrDesController extends Controller
         $tab          = $request->input('tab');
         $mesaj_id     = $request->input('mesaj_id');
         $msg          = $request->session()->get('msg');
-        $destek       = new AcrDesController();
-        $destek_model = new Destek_model();
-        return view('acr_des_v::destek_ayar', compact('destek', 'tab', 'destek_model', 'mesaj_id', 'msg'));
+        $fatura       = new AcrFatController();
+        $fatura_model = new Fatura_model();
+        return view('acr_fat_v::fatura_ayar', compact('fatura', 'tab', 'fatura_model', 'mesaj_id', 'msg'));
     }
 
     function index(Request $request)
     {
         $tab = $request->input('tab');
         if (empty($tab)) {
-            $tab = 'destek_gelen';
+            $tab = 'fatura_gelen';
         }
         $mesaj_id     = $request->input('mesaj_id');
         $msg          = $request->session()->get('msg');
-        $destek       = new AcrDesController();
-        $destek_model = new Destek_model();
-        return view('acr_des_v::anasayfa', compact('destek', 'tab', 'destek_model', 'mesaj_id', 'msg'));
+        $fatura       = new AcrFatController();
+        $fatura_model = new Fatura_model();
+        return view('acr_fat_v::anasayfa', compact('fatura', 'tab', 'fatura_model', 'mesaj_id', 'msg'));
     }
 
     function yeni_mesaj(Request $request)
@@ -68,94 +68,94 @@ class AcrDesController extends Controller
         $tab          = '';
         $mesaj_id     = $request->input('mesaj_id');
         $msg          = $request->session()->get('msg');
-        $destek       = new AcrDesController();
-        $destek_model = new Destek_model();
-        return view('acr_des_v::yeni_mesaj', compact('destek', 'tab', 'destek_model', 'mesaj_id', 'msg'));
+        $fatura       = new AcrFatController();
+        $fatura_model = new Fatura_model();
+        return view('acr_fat_v::yeni_mesaj', compact('fatura', 'tab', 'fatura_model', 'mesaj_id', 'msg'));
     }
 
     function mesaj_oku(Request $request)
     {
         $tab = $request->input('tab');
         if (empty($tab)) {
-            $tab = 'destek_gelen';
+            $tab = 'fatura_gelen';
         }
         $mesaj_id     = $request->input('mesaj_id');
         $msg          = $request->session()->get('msg');
-        $destek       = new AcrDesController();
-        $destek_model = new Destek_model();
-        return view('acr_des_v::mesaj_oku', compact('destek', 'tab', 'destek_model', 'mesaj_id', 'msg'));
+        $fatura       = new AcrFatController();
+        $fatura_model = new Fatura_model();
+        return view('acr_fat_v::mesaj_oku', compact('fatura', 'tab', 'fatura_model', 'mesaj_id', 'msg'));
     }
 
     function anasayfa(Request $request)
     {
         $tab = $request->input('tab');
         if (empty($tab)) {
-            $tab = 'destek_gelen';
+            $tab = 'fatura_gelen';
         }
         $mesaj_id     = $request->input('mesaj_id');
         $msg          = $request->session()->get('msg');
-        $destek       = new AcrDesController();
-        $destek_model = new Destek_model();
-        return view('acr_des_v::anasayfa', compact('destek', 'tab', 'destek_model', 'mesaj_id', 'msg'));
+        $fatura       = new AcrFatController();
+        $fatura_model = new Fatura_model();
+        return view('acr_fat_v::anasayfa', compact('fatura', 'tab', 'fatura_model', 'mesaj_id', 'msg'));
     }
 
     function sil(Request $request)
     {
-        $destek_id    = $request->input('destek_id');
+        $fatura_id    = $request->input('fatura_id');
         $tab          = $request->input('tab');
-        $destek_model = new Destek_model();
-        if ($tab == 'destek_cop') {
-            $destek_model->sil($destek_id);
+        $fatura_model = new Fatura_model();
+        if ($tab == 'fatura_cop') {
+            $fatura_model->sil($fatura_id);
         } else {
-            $destek_model->cope_tasi($destek_id);
+            $fatura_model->cope_tasi($fatura_id);
         }
-        return $destek_id;
+        return $fatura_id;
     }
 
     function sil_link(Request $request)
     {
         self::tek_sil($request);
-        return redirect()->to('/acr/des?tab=' . $request->input('tab'))->with('msg', $this->silindi);
+        return redirect()->to('/acr/fat?tab=' . $request->input('tab'))->with('msg', $this->silindi);
     }
 
     function tek_sil(Request $request)
     {
-        $destek_id    = $request->input('destek_id');
+        $fatura_id    = $request->input('fatura_id');
         $tab          = $request->input('tab');
-        $destek_model = new Destek_model();
-        if ($tab == 'destek_cop') {
-            $destek_model->tek_sil($destek_id);
+        $fatura_model = new Fatura_model();
+        if ($tab == 'fatura_cop') {
+            $fatura_model->tek_sil($fatura_id);
         } else {
-            $destek_model->tek_cope_tasi($destek_id);
+            $fatura_model->tek_cope_tasi($fatura_id);
         }
-        return $destek_id;
+        return $fatura_id;
     }
 
     function menu($tab)
     {
-        $destek_model = new Destek_model();
-        $tab_menu     = $destek_model->tab_menu();
+        $fatura_model = new Fatura_model();
+        $tab_menu     = $fatura_model->tab_menu();
         $link         = '';
         foreach ($tab_menu as $datum => $tab_menus) {
-            $okunmayan = $destek_model->gelen_okunmayan_sayi($tab_menus[2]) == 0 ? '' : '<span style="color: red;">' . $destek_model->gelen_okunmayan_sayi($tab_menus[2]) . '</span>';
+            $okunmayan = $fatura_model->gelen_okunmayan_sayi($tab_menus[2]) == 0 ? '' : '<span style="color: red;">' . $fatura_model->gelen_okunmayan_sayi($tab_menus[2]) . '</span>';
             $active    = $datum == $tab ? 'class="active"' : '';
-            $link      .= '<li ' . $active . ' ><a href="/acr/des?tab=' . $datum . '"><i class="fa fa-' . $tab_menus[1] . '"></i> ' . $tab_menus[0] . ' ' . $okunmayan . ' </a></li>';
+            $link      .= '<li ' . $active . ' ><a href="/acr/fat?tab=' . $datum . '"><i class="fa fa-' . $tab_menus[1] . '"></i> ' . $tab_menus[0] . ' ' . $okunmayan . ' </a></li>';
         }
-        if ($tab == 'destek_ayar') {
+        if ($tab == 'fatura_ayar') {
             $activeAyar = 'class="active"';
         } else {
             $activeAyar = '';
         }
-        if ($destek_model->uye_id() == 1) {
-            $admin_ayar = '<li ' . $activeAyar . '><a href="/acr/des/ayar?tab=destek_ayar"><i class="fa  fa-gears"></i>  Admin Ayarlar</a></li>';
+        if ($fatura_model->uye_id() == 1) {
+            $admin_ayar = '<li ' . $activeAyar . '><a href="/acr/fat/ayar?tab=fatura_ayar"><i class="fa  fa-gears"></i>  Admin Ayarlar</a></li>';
         } else {
             $admin_ayar = '';
         }
         return '<div class="col-md-3">
-            <a href="/acr/des/yeni_mesaj" class="btn btn-primary btn-block margin-bottom">Yeni Mesaj Gönder</a>
+            <a href="/acr/fat/yeni_mesaj" class="btn btn-primary btn-block margin-bottom">Yeni Mesaj Gönder</a>
             <div class="box box-solid">
                 <div class="box-header with-border">
-                    <h3 class="box-title">DESTEK</h3>
+                    <h3 class="box-title">Fatura</h3>
                     <div class="box-tools">
                         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                         </button>
@@ -171,16 +171,16 @@ class AcrDesController extends Controller
         </div>';
     }
 
-    function destek_satir($item, $tab)
+    function fatura_satir($item, $tab)
     {
         $okunduStyle = $item->okundu == 1 ? 'style="color:#B0C4DE"' : '';
         $konu        = $item->okundu == 1 ? $item->konu : '<b>' . $item->konu . '</b>';
         $item->name  = empty($item->name) ? $item->ad : $item->name;
         $item->name  = empty($item->name) ? 'İsimsiz Üye' : $item->name;
         $veri        =
-            '<tr id="destek_satir_' . $item->destek_users_id . '">
-                   <td><input id="destek_id[]" name="destek_id[]" value="' . $item->destek_users_id . '"  type="checkbox"></td>
-                   <td class="mailbox-name"><a ' . $okunduStyle . ' href="/acr/des/mesaj_oku?mesaj_id=' . $item->destek_users_id . '&tab=' . $tab . '">' . $item->name . '</a></td>
+            '<tr id="fatura_satir_' . $item->fatura_users_id . '">
+                   <td><input id="fatura_id[]" name="fatura_id[]" value="' . $item->fatura_users_id . '"  type="checkbox"></td>
+                   <td class="mailbox-name"><a ' . $okunduStyle . ' href="/acr/fat/mesaj_oku?mesaj_id=' . $item->fatura_users_id . '&tab=' . $tab . '">' . $item->name . '</a></td>
                    <td class="mailbox-subject">' . $konu . '</td>
                    <td class="mailbox-attachment"></td>
                    <td align="right" class="mailbox-date">' . date('d/m/Y H:i', strtotime($item->d_cd)) . '</td>
@@ -190,10 +190,10 @@ class AcrDesController extends Controller
 
     function mesajlar($tab, $sil)
     {
-        $destek_model = new Destek_model();
-        $destek_model = $destek_model->tab_menu();
-        $tur          = $destek_model[$tab][2];
-        $mesajlar     = $destek_model->mesajlar($tur, $sil);
+        $fatura_model = new Fatura_model();
+        $fatura_model = $fatura_model->tab_menu();
+        $tur          = $fatura_model[$tab][2];
+        $mesajlar     = $fatura_model->mesajlar($tur, $sil);
         return $mesajlar;
     }
 
@@ -205,21 +205,21 @@ class AcrDesController extends Controller
         return $metin;
     }
 
-    function destek_mesaj_kaydet(Request $request)
+    function fatura_mesaj_kaydet(Request $request)
     {
         $mail         = new MailController();
-        $destek_model = new Destek_model();
+        $fatura_model = new Fatura_model();
         $mesaj        = $request->input('mesaj');
         $konu         = $request->input('konu');
         $dosya        = $request->file('attachment');
         $uye_id       = $request->input('uye_id');
 
-        $gon_id = $destek_model->uye_id();;
-        $ayar     = $destek_model->destek_ayar();
+        $gon_id = $fatura_model->uye_id();;
+        $ayar     = $fatura_model->fatura_ayar();
         $email    = $ayar->user_email_stun;
-        $mesaj_id = $destek_model->destek_mesaj_kaydet($konu, $mesaj, $uye_id, $gon_id);
+        $mesaj_id = $fatura_model->fatura_mesaj_kaydet($konu, $mesaj, $uye_id, $gon_id);
 
-        $alan      = $destek_model->alan($uye_id);
+        $alan      = $fatura_model->alan($uye_id);
         $alan_isim = empty($alan->name) ? $alan->ad : $alan->name;
         if (!empty($dosya)) {
             $size       = round($dosya->getClientSize() / 1000000, 2);
@@ -228,32 +228,32 @@ class AcrDesController extends Controller
             $dosya_isim = self::ingilizceYap($isim) . '.' . $type;
             $dosya->move(public_path('/uploads'), $dosya_isim);
             if ($size < 21 && $size > 0) {
-                $destek_model->destek_dosya_kaydet($mesaj_id, $dosya_isim, $uye_id, $gon_id, $size, $type, $isim);
+                $fatura_model->fatura_dosya_kaydet($mesaj_id, $dosya_isim, $uye_id, $gon_id, $size, $type, $isim);
             } else {
-                return redirect()->to('/acr/des/yeni_mesaj')->with('msg', $this->dosyaBuyuk);
+                return redirect()->to('/acr/fat/yeni_mesaj')->with('msg', $this->dosyaBuyuk);
             }
         }
         if (!empty($alan->tel) && $ayar->sms_aktiflik == 1) {
             $tel[] = $alan->tel;
             self::smsGonder($_SERVER['SERVER_NAME'] . ' size mesaj gönderdi, sisteme giriş yaparak inceleyebilirsiniz.', $tel, $ayar->sms_user, $ayar->sms_sifre, $ayar->sms_baslik);
         }
-        $mail->mailGonder('mail.destek', $alan->$email, $alan_isim, $konu . '<br>', $mesaj);
-        return redirect()->to('/acr/des/yeni_mesaj')->with('msg', $this->gonderildi);
+        $mail->mailGonder('mail.fatura', $alan->$email, $alan_isim, $konu . '<br>', $mesaj);
+        return redirect()->to('/acr/fat/yeni_mesaj')->with('msg', $this->gonderildi);
     }
 
     function dosya_indir(Request $request)
     {
-        $destek_model       = new Destek_model();
-        $destek_dosya_model = new Destek_dosya_model();
-        $destek_dosya_id    = $request->input('dosya_id');
-        $dosyaSorgu         = $destek_dosya_model->where('id', $destek_dosya_id);
+        $fatura_model       = new Fatura_model();
+        $fatura_dosya_model = new Fatura_dosya_model();
+        $fatura_dosya_id    = $request->input('dosya_id');
+        $dosyaSorgu         = $fatura_dosya_model->where('id', $fatura_dosya_id);
         $dosya_sayi         = $dosyaSorgu->count();
         if ($dosya_sayi > 0) {
             $dosya   = $dosyaSorgu->first();
             $izinler = [
                 $dosya->uye_id, $dosya->gon_id
             ];
-            if (in_array($destek_model->uye_id(), $izinler)) {
+            if (in_array($fatura_model->uye_id(), $izinler)) {
                 return response()->download(public_path('/uploads/' . $dosya->dosya_isim), $dosya->dosya_org_isim . '.' . $dosya->type);
             } else {
                 return 'Dosya erişiminize izniniz bulunmuyor.';
@@ -266,19 +266,19 @@ class AcrDesController extends Controller
 
     function ayar_kaydet(Request $request)
     {
-        $destek_model = new Destek_model();
+        $fatura_model = new Fatura_model();
         $veri         = [
-            'destek_mail'       => $request->input('destek_mail'),
+            'fatura_mail'       => $request->input('fatura_mail'),
             'sms_user'          => $request->input('sms_user'),
             'sms_sifre'         => $request->input('sms_sifre'),
-            'destek_admin_isim' => $request->input('destek_admin_isim'),
+            'fatura_admin_isim' => $request->input('fatura_admin_isim'),
             'sms_aktiflik'      => $request->input('sms_aktiflik'),
             'sms_baslik'        => $request->input('sms_baslik'),
             'user_name_stun'    => $request->input('user_name_stun'),
             'user_id_stun'      => $request->input('user_id_stun'),
             'user_email_stun'   => $request->input('user_email_stun'),
         ];
-        $destek_model->destek_ayar_kaydet($veri);
+        $fatura_model->fatura_ayar_kaydet($veri);
         return redirect()->back()->with('msg', $this->basariliGuncelleme);
     }
 

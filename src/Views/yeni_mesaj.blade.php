@@ -1,13 +1,13 @@
-@extends('acr_destek.index')
-@section('acr_destek')
+@extends('acr_fatura.index')
+@section('acr_fatura')
     <section class="content">
         <?php echo empty($msg) ? '' : $msg; ?>
         <div class="row">
         <?php
 
-        echo $destek->menu($tab);
+        echo $fatura->menu($tab);
         if ($mesaj_id) {
-            $mesaj        = $destek_model->mesaj_oku($mesaj_id);
+            $mesaj        = $fatura_model->mesaj_oku($mesaj_id);
             $konu         = 'RE: ' . $mesaj->konu;
             $mesaj_icerik = '<br><br>.............................................................. <br>Cevabı üst satıra yazınız<br>' . $mesaj->du_cd . '<br>' . $mesaj->mesaj;
             $uye_id       = $mesaj->gon_id;
@@ -20,7 +20,7 @@
         }
         ?>
         <!-- /.col -->
-            <form action="/acr/des/destek_mesaj_kaydet" method="post" enctype="multipart/form-data">
+            <form action="/acr/fat/fatura_mesaj_kaydet" method="post" enctype="multipart/form-data">
                 <?php echo csrf_field() ?>
                 <div class="col-md-9">
                     <div class="box box-primary">
@@ -52,7 +52,7 @@
                             <div class="pull-right">
                                 <button type="submit" id="myButton" data-loading-text="Loading..." id="gonder" class="btn btn-primary"><i class="fa fa-envelope-o"></i> Gönder</button>
                             </div>
-                            <a href="/acr/des/" type="reset" class="btn btn-default"><i class="fa fa-times"></i> Vazgeç</a>
+                            <a href="/acr/fat/" type="reset" class="btn btn-default"><i class="fa fa-times"></i> Vazgeç</a>
                         </div>
                         <!-- /.box-footer -->
                     </div>

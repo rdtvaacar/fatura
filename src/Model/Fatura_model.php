@@ -1,13 +1,13 @@
 <?php
 
-namespace Acr\Des\Model;
+namespace Acr\Fat\Model;
 
 use Illuminate\Database\Eloquent\Model;
 use App\User;
 use Auth;
-use Acr\Des\Model\Destek_ayar_model;
+use Acr\Fat\Model\Fatura_ayar_model;
 
-class Destek_model extends Model
+class Fatura_model extends Model
 
 {
     /**
@@ -15,14 +15,14 @@ class Destek_model extends Model
      *
      * @var string
      */
-    protected $table = 'destek';
+    protected $table = 'fatura';
     public    $uye_id;
     public    $kurum_id;
 
     function uye_id()
     {
         if (Auth::check()) {
-            $ayar = self::destek_ayar();
+            $ayar = self::fatura_ayar();
             if (empty($ayar)) {
                 return 1;
             } else {
@@ -37,9 +37,9 @@ class Destek_model extends Model
     function tab_menu()
     {
         $data = [
-            'destek_gelen' => ['Gelen Kutusu', 'inbox', 0],
-            'destek_giden' => ['Gönderilenler', 'envelope-o', 1],
-            'destek_cop'   => ['Çöp Kutusu', 'trash-o', 2],
+            'fatura_gelen' => ['Gelen Kutusu', 'inbox', 0],
+            'fatura_giden' => ['Gönderilenler', 'envelope-o', 1],
+            'fatura_cop'   => ['Çöp Kutusu', 'trash-o', 2],
         ];
         return $data;
     }
@@ -55,42 +55,42 @@ class Destek_model extends Model
 
     function gelen_okunmayan_sayi($tur)
     {
-        return Destek_users_model::where('destek_users.uye_id', self::uye_id())->where('okundu', 0)->where('tur', $tur)->where('sil', 0)->count();
+        return Fatura_users_model::where('fatura_users.uye_id', self::uye_id())->where('okundu', 0)->where('tur', $tur)->where('sil', 0)->count();
     }
 
     function mesajlar($tab, $sil)
     {
         $data    = self::tab_menu();
         $tur     = $data[$tab][2];
-        $ayar    = Destek_model::destek_ayar();
+        $ayar    = Fatura_model::fatura_ayar();
         $user_id = $ayar->user_id_stun;
-        return $sorgu = Destek_users_model::leftJoin('destek', 'destek_users.mesaj_id', '=', 'destek.id')
-            ->leftJoin('users', 'users.' . $user_id, '=', 'destek_users.gon_id')
-            ->where('destek_users.uye_id', self::uye_id())
-            ->where('destek_users.tur', $tur)
-            ->where('destek_users.sil', $sil)
-            ->orderBy('destek.id', 'desc')
-            ->select('destek.*', 'users.*', 'destek_users.*', 'users.' . $user_id . ' as uye_id', 'destek.id as destek_id', 'destek_users.id as destek_users_id', 'users.created_at as users_cd', 'destek.created_at as d_cd', 'destek_users.created_at as du_cd')
+        return $sorgu = Fatura_users_model::leftJoin('fatura', 'fatura_users.mesaj_id', '=', 'fatura.id')
+            ->leftJoin('users', 'users.' . $user_id, '=', 'fatura_users.gon_id')
+            ->where('fatura_users.uye_id', self::uye_id())
+            ->where('fatura_users.tur', $tur)
+            ->where('fatura_users.sil', $sil)
+            ->orderBy('fatura.id', 'desc')
+            ->select('fatura.*', 'users.*', 'fatura_users.*', 'users.' . $user_id . ' as uye_id', 'fatura.id as fatura_id', 'fatura_users.id as fatura_users_id', 'users.created_at as users_cd', 'fatura.created_at as d_cd', 'fatura_users.created_at as du_cd')
             ->paginate(50);
     }
 
     function mesaj_oku($mesaj_id)
     {
-        $ayar    = Destek_model::destek_ayar();
+        $ayar    = Fatura_model::fatura_ayar();
         $user_id = $ayar->user_id_stun;
-        Destek_users_model::where('uye_id', self::uye_id())->where('id', $mesaj_id)->update(['okundu' => 1]);
-        return Destek_users_model::leftJoin('destek', 'destek_users.mesaj_id', '=', 'destek.id')
-            ->leftJoin('users', 'users.' . $user_id, '=', 'destek_users.gon_id')
-            ->leftJoin('destek_dosya', 'destek_dosya.mesaj_id', '=', 'destek_users.mesaj_id')
-            ->where('destek_users.uye_id', self::uye_id())
-            ->where('destek_users.id', $mesaj_id)
-            ->select('destek_dosya.*', 'destek.*', 'users.*', 'destek_users.*', 'users.' . $user_id . ' as uye_id', 'destek_dosya.id as destek_dosya_id', 'destek.id as destek_id', 'destek_users.id as destek_users_id', 'users.created_at as users_cd', 'destek.created_at as d_cd', 'destek_users.created_at as du_cd')
+        Fatura_users_model::where('uye_id', self::uye_id())->where('id', $mesaj_id)->update(['okundu' => 1]);
+        return Fatura_users_model::leftJoin('fatura', 'fatura_users.mesaj_id', '=', 'fatura.id')
+            ->leftJoin('users', 'users.' . $user_id, '=', 'fatura_users.gon_id')
+            ->leftJoin('fatura_dosya', 'fatura_dosya.mesaj_id', '=', 'fatura_users.mesaj_id')
+            ->where('fatura_users.uye_id', self::uye_id())
+            ->where('fatura_users.id', $mesaj_id)
+            ->select('fatura_dosya.*', 'fatura.*', 'users.*', 'fatura_users.*', 'users.' . $user_id . ' as uye_id', 'fatura_dosya.id as fatura_dosya_id', 'fatura.id as fatura_id', 'fatura_users.id as fatura_users_id', 'users.created_at as users_cd', 'fatura.created_at as d_cd', 'fatura_users.created_at as du_cd')
             ->first();
     }
 
     function dosyalar($mesaj_id)
     {
-        $dosyaSorgu = Destek_dosya_model::where('mesaj_id', $mesaj_id);
+        $dosyaSorgu = Fatura_dosya_model::where('mesaj_id', $mesaj_id);
         $dosya_sayi = $dosyaSorgu->count();
         if ($dosya_sayi > 0) {
             return $dosya = $dosyaSorgu->get();
@@ -108,36 +108,36 @@ class Destek_model extends Model
                 unlink('/uploads/' . $item->dosya_isim);
             }
         }
-        Destek_dosya_model::where('mesaj_id', $mesaj_id)->delete();
+        Fatura_dosya_model::where('mesaj_id', $mesaj_id)->delete();
 
     }
 
-    function sil($destek_id)
+    function sil($fatura_id)
     {
-        $destek_user_sorgu = Destek_users_model::where('uye_id', self::uye_id())->whereIn('id', $destek_id);
-        $destek_user_sorgu->update(['tur' => 2, 'sil' => 1]);
-        $destek_user_satir = $destek_user_sorgu->first();
-        self::tum_dosya_sil($destek_user_satir->mesaj_id);
+        $fatura_user_sorgu = Fatura_users_model::where('uye_id', self::uye_id())->whereIn('id', $fatura_id);
+        $fatura_user_sorgu->update(['tur' => 2, 'sil' => 1]);
+        $fatura_user_satir = $fatura_user_sorgu->first();
+        self::tum_dosya_sil($fatura_user_satir->mesaj_id);
     }
 
-    function cope_tasi($destek_id)
+    function cope_tasi($fatura_id)
     {
-        Destek_users_model::where('uye_id', self::uye_id())->whereIn('id', $destek_id)->update(['tur' => 2]);
+        Fatura_users_model::where('uye_id', self::uye_id())->whereIn('id', $fatura_id)->update(['tur' => 2]);
     }
 
-    function tek_sil($destek_id)
+    function tek_sil($fatura_id)
     {
-        Destek_users_model::where('uye_id', self::uye_id())->where('id', $destek_id)->update(['tur' => 2, 'sil' => 1]);
+        Fatura_users_model::where('uye_id', self::uye_id())->where('id', $fatura_id)->update(['tur' => 2, 'sil' => 1]);
     }
 
-    function tek_cope_tasi($destek_id)
+    function tek_cope_tasi($fatura_id)
     {
-        Destek_users_model::where('uye_id', self::uye_id())->where('id', $destek_id)->update(['tur' => 2]);
+        Fatura_users_model::where('uye_id', self::uye_id())->where('id', $fatura_id)->update(['tur' => 2]);
     }
 
     function gonderen($gon_id)
     {
-        $ayar     = Destek_model::destek_ayar();
+        $ayar     = Fatura_model::fatura_ayar();
         $user     = new User();
         $gonderen = $user->where($ayar->user_id_stun, $gon_id)->first()->name;
         return $gonderen;
@@ -145,20 +145,20 @@ class Destek_model extends Model
 
     function alan($uye_id)
     {
-        $ayar = Destek_model::destek_ayar();
+        $ayar = Fatura_model::fatura_ayar();
         $user = new User();
         $alan = $user->where($ayar->user_id_stun, $uye_id)->first();
         return $alan;
     }
 
-    function destek_mesaj_kaydet($konu, $mesaj, $uye_id, $gon_id)
+    function fatura_mesaj_kaydet($konu, $mesaj, $uye_id, $gon_id)
     {
         $data = [
             'konu'  => $konu,
             'mesaj' => $mesaj
         ];
 
-        $mesaj_id = Destek_model::insertGetId($data);
+        $mesaj_id = Fatura_model::insertGetId($data);
         $data2    = [
             'uye_id'   => $uye_id,
             'mesaj_id' => $mesaj_id,
@@ -166,7 +166,7 @@ class Destek_model extends Model
             'tur'      => 0
         ];
 
-        Destek_users_model::insert($data2);
+        Fatura_users_model::insert($data2);
         $data3 = [
             'uye_id'   => $gon_id,
             'mesaj_id' => $mesaj_id,
@@ -174,11 +174,11 @@ class Destek_model extends Model
             'tur'      => 1,
             'okundu'   => 1
         ];
-        Destek_users_model::insert($data3);
+        Fatura_users_model::insert($data3);
         return $mesaj_id;
     }
 
-    function destek_dosya_kaydet($mesaj_id, $dosya_isim, $uye_id, $gon_id, $size, $type, $isim)
+    function fatura_dosya_kaydet($mesaj_id, $dosya_isim, $uye_id, $gon_id, $size, $type, $isim)
     {
 
         $data = [
@@ -190,22 +190,22 @@ class Destek_model extends Model
             'size'           => $size,
             'type'           => $type
         ];
-        Destek_dosya_model::insert($data);
+        Fatura_dosya_model::insert($data);
 
     }
 
-    function destek_ayar()
+    function fatura_ayar()
     {
-        return Destek_ayar_model::first();
+        return Fatura_ayar_model::first();
     }
 
-    function destek_ayar_kaydet($data)
+    function fatura_ayar_kaydet($data)
     {
         unset($data['_token']);
-        if (Destek_ayar_model::count() > 0) {
-            return Destek_ayar_model::where('id', 1)->update($data);
+        if (Fatura_ayar_model::count() > 0) {
+            return Fatura_ayar_model::where('id', 1)->update($data);
         } else {
-            return Destek_ayar_model::insert($data);
+            return Fatura_ayar_model::insert($data);
         }
 
     }

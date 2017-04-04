@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 </head>
 <body>
-<h2>Destek : </h2>
+<h2>Fatura : </h2>
 
 <div>
 
